@@ -1,0 +1,50 @@
+@charset "utf-8";
+
+@import 'primeicons/primeicons.css';
+
+@layer tailwind-base, primevue, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+html {
+  @apply text-base;
+  @apply font-normal;
+  @apply font-serif;
+  @apply text-black;
+  @apply antialiased;
+  overflow-y: unset;
+  @apply h-screen;
+  @apply scroll-smooth;
+}
+
+
+body {
+  @apply h-full;
+  overflow: unset;
+}
+
+#__nuxt {
+  @apply h-dvh;
+  @apply w-dvw;
+  @apply flex;
+  @apply flex-col;
+}
+
+.nuxt-progress {
+  color: var(--p-amber-400);
+}
+
+a {
+  color: var(--p-blue-600);
+}
+
+.loading-overlay {
+  z-index: 5;
+}
