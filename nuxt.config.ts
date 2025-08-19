@@ -4,6 +4,7 @@ import Aura from "@primeuix/themes/aura";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
+  ssr: false,
   srcDir: "./src/",
   css: ["~/assets/scss/main.scss"],
   app: {
@@ -11,11 +12,11 @@ export default defineNuxtConfig({
     head: {
       charset: "utf-8",
       viewport: "width=device-width, initial-scale=1",
-      title: "Vadym Income Tracker",
+      title: "Volunteer Management System",
       link: [
         {
           rel: "stylesheet",
-          href: "https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap",
+          href: "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap",
         },
         {
           rel: "stylesheet",
@@ -29,8 +30,9 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
   ],
   primevue: {
+    importTheme: { from: "~/assets/theme/theme.js" },
     components: {
-      include: ["Button"],
+      include: ["Button", "Image", "Carousel"],
     },
     directives: {
       include: ["Ripple", "Tooltip", "FocusTrap"],
@@ -38,9 +40,6 @@ export default defineNuxtConfig({
     options: {
       ripple: true,
       inputVariant: "filled",
-      theme: {
-        preset: Aura,
-      },
     },
   },
   tailwindcss: {

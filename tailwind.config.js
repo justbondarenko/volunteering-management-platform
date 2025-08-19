@@ -5,8 +5,8 @@ module.exports = {
   content: ['./src/**/*.{js,vue,ts,css,scss}'],
   theme: {
     fontFamily: {
-      serif: ['Lato', 'sans-serif'],
-      sans: ['Lato', 'sans-serif'],
+      serif: ['Roboto', 'sans-serif'],
+      sans: ['Roboto', 'sans-serif'],
     },
   },
   plugins: [tailwindcssTypography(), PrimeUITailwindPlugin]
