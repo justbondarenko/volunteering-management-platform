@@ -1,0 +1,8 @@
+src/data/*
+.gitlab-ci.yml
+.prettierignore
+.gitignore
+
+.husky
+.eslintrc.json
+.eslingignore

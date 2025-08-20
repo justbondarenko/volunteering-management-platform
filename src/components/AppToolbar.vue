@@ -1,29 +1,40 @@
 <template>
   <Toolbar>
     <template #start>
-      <div class="flex items-center gap-2">
+      <NuxtLink to="/" class="flex items-center gap-2 text-gray-700">
         <Logo />
         <span class="text-2xl font-bold">Назва Організації</span>
-      </div>
+      </NuxtLink>
     </template>
 
-    <template #end>
+    <!-- <template #center>
       <div class="flex items-center gap-6 pr-10">
-        <a v-for="item in items" :key="item.label" :href="item.href" class="text-lg font-bold text-gray-700">{{ item.label }}</a>
+        <a
+          v-for="item in items"
+          :key="item.label"
+          :href="item.href"
+          class="text-lg font-bold text-gray-700"
+          >{{ item.label }}</a
+        >
       </div>
+    </template> -->
+    <template #end>
+      <LoginButton />
     </template>
   </Toolbar>
 </template>
 
 <script setup lang="ts">
+import LoginButton from "./LoginButton.vue";
+
 const items = ref([
   {
-    label: "Організації",
-    href: "/organizations",
+    label: "Організаціям",
+    href: "/for-organizations",
   },
   {
-    label: "Як це працює?",
-    href: "/how-it-works",
+    label: "Волонтерам",
+    href: "/for-volunteers",
   },
   {
     label: "Про нас",
@@ -32,6 +43,6 @@ const items = ref([
   {
     label: "Контакти",
     href: "/contacts",
-  }
+  },
 ]);
 </script>

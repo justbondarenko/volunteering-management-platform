@@ -3,21 +3,10 @@
     class="border rounded-lg p-4 w-full h-fit flex flex-col gap-4 items-start bg-gray-100/50"
   >
     <span class="text-2xl font-bold">Останні події</span>
-    <div class="w-full">
-      <div class="flex items-center justify-between">
-        <InputText v-model="search" placeholder="Пошук" />
-        <Select
-          v-model="selectedCity"
-          :options="cities"
-          optionLabel="name"
-          placeholder="Виберіть місто"
-          class="w-full md:w-56"
-          @change="filterEvents"
-          showClear
-        />
-      </div>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 auto-cols-fr gap-4 w-full">
+
+    <div
+      class="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 auto-cols-fr gap-4 w-full"
+    >
       <Card v-for="event in filteredEvents" :key="event.id" class="bg-slate-50">
         <template #content>
           <div class="flex items-start justify-between w-full gap-2">
@@ -36,9 +25,7 @@
             <div class="flex items-start justify-between w-full">
               <div class="flex flex-col w-full gap-0.5 items-end">
                 <span class="text-xl text-gray-700">Відгукнулось:</span>
-                <div
-                  class="flex items-center gap-2 text-3xl font-black text-right"
-                >
+                <div class="flex items-center gap-2 text-3xl font-black text-right">
                   {{ event.volunteers }} / {{ event.required }}
                 </div>
               </div>
@@ -94,7 +81,7 @@ const cities = ref([
 ]);
 
 const events = ref(
-  Array.from({ length: 10 }, (_, index) => ({
+  Array.from({ length: 5 }, (_, index) => ({
     id: index + 1,
     title: `Подія ${index + 1}`,
     date: "10.09.2025",
@@ -108,11 +95,13 @@ const events = ref(
 
 const filterEvents = () => {
   if (selectedCity.value) {
-    filteredEvents.value = events.value.filter((event: any) => event.city === selectedCity.value?.name);
+    filteredEvents.value = events.value.filter(
+      (event: any) => event.city === selectedCity.value?.name
+    );
   } else {
     filteredEvents.value = events.value;
   }
-}; 
+};
 
 onMounted(() => {
   filterEvents();
