@@ -8,6 +8,9 @@
         </div>
       </template>
       <template #content>
+        <!-- TODO: REMOVE THIS WHEN WE HAVE REAL LOGIN -->
+        <Message severity="info" icon="pi pi-code" class="mb-4">Це тестова сторінка, використовуйте organization@example.com та password123 для входу.</Message>
+        <Message v-if="apiError" severity="error" icon="pi pi-exclamation-triangle" class="mb-4">{{ apiError }}</Message>
         <form @submit.prevent="handleLogin" class="flex flex-col gap-4">
           <div class="flex flex-col gap-2">
             <label for="email" class="font-medium">Email</label>
@@ -16,7 +19,7 @@
               v-model="email"
               type="email"
               placeholder="your@email.com"
-              :class="{ 'p-invalid': errors.email !== '' }"
+              :class="{ 'p-invalid': errors.email !== '' || !!apiError }"
               aria-describedby="email-error"
             />
             <small id="email-error" class="text-red-500" v-if="errors.email">
@@ -33,7 +36,7 @@
               fluid
               toggleMask
               class="w-full"
-              :class="{ 'p-invalid': errors.password !== '' }"
+              :class="{ 'p-invalid': errors.password !== '' || !!apiError }"
               aria-describedby="password-error"
               placeholder="Введіть пароль"
             />
@@ -69,9 +72,10 @@
 
 <script setup lang="ts">
 import { z } from 'zod';
-import Logo from '~/components/Logo.vue';
 import { useToast } from 'primevue/usetoast';
+import Message from 'primevue/message';
 const toast = useToast();
+const apiError = ref('');
 
 definePageMeta({
   layout: "default",
@@ -132,10 +136,10 @@ const handleLogin = async () => {
     await new Promise((resolve, reject) => {
       setTimeout(() => {
         // Simulate API call - for demo purposes only
-        if (email.value === 'test@example.com' && password.value === 'password123') {
+        if (email.value === 'organization@example.com' && password.value === 'password123') {
           resolve(true);
         } else {
-          reject(new Error('Invalid credentials'));
+          reject(new Error('Невірні облікові дані'));
         }
       }, 1000);
     });
@@ -150,11 +154,12 @@ const handleLogin = async () => {
     //   }
     // });
 
-    // On successful login, redirect to organization dashboard
-    router.push('/organizations/dashboard');
-  } catch (error) {
+    // On successful login, redirect to organization profile
+    router.push('/organizations/profile');
+  } catch (error: any) {
     // Handle login errors
     const errorMessage = error instanceof Error ? error.message : 'Помилка входу. Спробуйте ще раз.';
+    apiError.value = error.message;
 
     // Show error toast
     toast?.add({
