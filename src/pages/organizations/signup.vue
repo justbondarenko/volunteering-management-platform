@@ -289,8 +289,8 @@ const registerSchema = z.object({
   email: z.string().email('Введіть дійсну email адресу'),
   password: z.string().min(8, 'Пароль має містити щонайменше 8 символів'),
   confirmPassword: z.string(),
-  acceptTerms: z.literal(true, {
-    errorMap: () => ({ message: 'Ви маєте погодитись з умовами використання' }),
+  acceptTerms: z.boolean().refine((value) => value, {
+    message: 'Ви маєте погодитись з умовами використання',
   }),
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'Паролі не співпадають',
@@ -317,7 +317,7 @@ const errors = ref({
 const handleRegister = async () => {
   // Reset errors
   Object.keys(errors.value).forEach(key => {
-    errors.value[key] = '';
+    errors.value[key as keyof typeof errors.value] = '';
   });
 
   // Validate form
@@ -330,7 +330,7 @@ const handleRegister = async () => {
       // Handle flat fields
       ['name', 'legalName', 'phone', 'edrpou', 'email', 'password', 'confirmPassword', 'acceptTerms'].forEach(field => {
         if (zodErrors[field]?._errors?.length) {
-          errors.value[field] = zodErrors[field]._errors[0];
+          errors.value[field as keyof typeof errors.value] = zodErrors[field]._errors[0];
         }
       });
       
@@ -338,7 +338,7 @@ const handleRegister = async () => {
       if (zodErrors.address) {
         ['country', 'city', 'addressLine', 'zip'].forEach(field => {
           if (zodErrors.address[field]?._errors?.length) {
-            errors.value[`address.${field}`] = zodErrors.address[field]._errors[0];
+            errors.value[`address.${field}` as keyof typeof errors.value] = zodErrors.address[field]._errors[0];
           }
         });
       }
