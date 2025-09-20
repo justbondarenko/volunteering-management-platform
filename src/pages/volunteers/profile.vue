@@ -12,6 +12,7 @@
         <Button label="Спробувати знову" severity="secondary" class="mt-3" @click="volunteerStore.fetchVolunteer" />
       </div>
 
+
       <!-- Profile content -->
       <div v-else-if="volunteerStore.volunteer" class="flex flex-col gap-6">
         <!-- Profile header -->
@@ -237,6 +238,7 @@ const toast = useToast();
 // Define page metadata
 definePageMeta({
   layout: 'volunteer',
+  middleware: 'volunteer-auth'
 });
 
 // Initialize store and toast

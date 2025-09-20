@@ -57,6 +57,7 @@ const mockOrganization: Organization = {
 export const useOrganizationStore = defineStore('organization', () => {
   // State
   const organization = ref<Organization | null>(null);
+  const isLoggedIn = ref(false);
   const isLoading = ref(false);
   const error = ref<string | null>(null);
 
@@ -73,8 +74,10 @@ export const useOrganizationStore = defineStore('organization', () => {
       // const response = await $fetch('/api/organizations/profile');
       // organization.value = response;
       
-      // For now, use mock data
-      organization.value = { ...mockOrganization };
+      // Only load data if user is logged in
+      if (isLoggedIn.value) {
+        organization.value = { ...mockOrganization };
+      }
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load organization profile';
       console.error('Error fetching organization profile:', err);
@@ -116,6 +119,38 @@ export const useOrganizationStore = defineStore('organization', () => {
     } finally {
       isLoading.value = false;
     }
+  };
+
+  const login = async (email: string, password: string) => {
+    isLoading.value = true;
+    error.value = null;
+    
+    try {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Test credentials for demo purposes
+      if (email === 'organization@example.com' && password === 'password123') {
+        // Set user as logged in and load organization data
+        organization.value = { ...mockOrganization };
+        isLoggedIn.value = true;
+        return true;
+      } else {
+        throw new Error('Невірні облікові дані');
+      }
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Failed to login';
+      console.error('Error during login:', err);
+      return false;
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
+  const logout = () => {
+    organization.value = null;
+    isLoggedIn.value = false;
+    error.value = null;
   };
 
   const uploadLogo = async (file: File) => {
@@ -188,6 +223,7 @@ export const useOrganizationStore = defineStore('organization', () => {
   return {
     // State
     organization,
+    isLoggedIn,
     isLoading,
     error,
     
@@ -195,6 +231,8 @@ export const useOrganizationStore = defineStore('organization', () => {
     fetchOrganization,
     updateOrganization,
     uploadLogo,
+    login,
+    logout,
     
     // Getters
     formattedJoinedDate,

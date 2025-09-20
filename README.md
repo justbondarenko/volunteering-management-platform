@@ -107,6 +107,15 @@ src/
   - Update address information
   - Profile picture management
 
+#### `/organizations/events` - Organization Events
+- **Layout**: `organization`
+- **Functionality**: List organization's events and create new ones
+- **Features**:
+  - Paginated table of events with date, location, status
+  - Quick stats per event: assigned vs needed volunteers
+  - Create-event dialog with validation (title, date/time, location, description, volunteers needed, status)
+  - Server-ready structure (mocked for now) for future API integration
+
 #### `/organizations/forgot` - Password Recovery
 - **Layout**: `default`
 - **Functionality**: Password reset request process
@@ -142,6 +151,15 @@ src/
   - Manage contact details
   - Profile picture management
   - Volunteer preferences and skills
+
+#### `/volunteers/events` - Browse and Apply to Events
+- **Layout**: `volunteer`
+- **Functionality**: Discover events and submit applications
+- **Features**:
+  - Filters: search, city, status, date range
+  - Grid view with status tags and short descriptions
+  - Apply action with validation and feedback
+  - Shows capacity: assigned vs needed volunteers
 
 #### `/volunteers/forgot` - Password Recovery
 - **Layout**: `default`
