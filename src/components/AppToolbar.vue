@@ -19,13 +19,21 @@
       </div>
     </template> -->
     <template #end>
-      <LoginButton />
+      <UserProfileDropdown v-if="isLoggedIn" />
+      <LoginButton v-else />
     </template>
   </Toolbar>
 </template>
 
 <script setup lang="ts">
 import LoginButton from "./LoginButton.vue";
+import UserProfileDropdown from "./UserProfileDropdown.vue";
+import { useVolunteerStore } from '~/stores/volunteer';
+
+const volunteerStore = useVolunteerStore();
+
+// Computed property for login state
+const isLoggedIn = computed(() => volunteerStore.isLoggedIn);
 
 const items = ref([
   {

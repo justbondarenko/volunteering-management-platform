@@ -9,7 +9,7 @@
         <span class="text-6xl font-bold w-fit text-white drop-shadow-lg"
           >Допомагай!</span
         >
-        <Button label="Приєднатись" size="large" class="w-fit" />
+        <Button label="Приєднатись" size="large" class="w-fit" @click="navigateToVolunteerLogin" />
       </div>
       <Carousel
         :value="slides"
@@ -35,14 +35,14 @@
       <span class="text-xl w-full">
         Ми допомагаємо організаціям знайти волонтерів для своїх проектів.
       </span>
-      <Button label="Створити подію" size="large" severity="secondary" class="w-fit mr-0 mt-auto mb-0" />
+      <Button label="Створити подію" size="large" severity="secondary" class="w-fit mr-0 mt-auto mb-0" @click="navigateToOrganizationLogin" />
     </div>
     <div class="w-full flex flex-col items-end gap-4 h-full rounded-lg p-10 bg-orange-800 text-white text-balanced col-span-4 md:col-span-2 2xl:col-span-1">
       <span class="text-4xl font-bold text-left w-full">Волонтерам</span>
       <span class="text-xl w-full">
         Ми допомагаємо волонтерам знайти подію для себе.
       </span>
-      <Button label="Знайти подію" size="large" severity="secondary" class="w-fit mr-0 mt-auto mb-0" />
+      <Button label="Знайти подію" size="large" severity="secondary" class="w-fit mr-0 mt-auto mb-0" @click="navigateToVolunteerEvents" />
     </div>
   </div>
 </template>
@@ -51,9 +51,9 @@
 import Carousel from "primevue/carousel";
 import Button from "primevue/button";
 
-defineComponent({
-  name: "HomepageCarousel",
-});
+const router = useRouter();
+const organizationStore = useOrganizationStore();
+const volunteerStore = useVolunteerStore();
 
 const slides = ref(
   Array.from({ length: 4 }, (_, i) => ({
@@ -69,4 +69,38 @@ const responsiveOptions = ref([
     numScroll: 1,
   },
 ]);
+
+// Navigation functions with authentication check
+const navigateToVolunteerLogin = () => {
+  // Check if volunteer is already logged in
+  if (volunteerStore.isLoggedIn) {
+    // If logged in, go to volunteer profile/dashboard
+    router.push('/volunteers/profile');
+  } else {
+    // If not logged in, go to volunteer login
+    router.push('/volunteers/login');
+  }
+};
+
+const navigateToOrganizationLogin = () => {
+  // Check if organization is already logged in
+  if (organizationStore.isLoggedIn) {
+    // If logged in, go to organization profile/dashboard
+    router.push('/organizations/profile');
+  } else {
+    // If not logged in, go to organization login
+    router.push('/organizations/login');
+  }
+};
+
+const navigateToVolunteerEvents = () => {
+  // Check if volunteer is already logged in
+  if (volunteerStore.isLoggedIn) {
+    // If logged in, go to volunteer events
+    router.push('/volunteers/events');
+  } else {
+    // If not logged in, go to volunteer login
+    router.push('/volunteers/login');
+  }
+};
 </script>

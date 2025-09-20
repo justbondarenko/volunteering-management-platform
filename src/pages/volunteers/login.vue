@@ -132,34 +132,29 @@ const handleLogin = async () => {
   try {
     isLoading.value = true;
 
-    // TODO: Implement actual login API call here
-    await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Simulate API call - for demo purposes only
-        if (email.value === 'volunteer@example.com' && password.value === 'password123') {
-          resolve(true);
-        } else {
-          reject(new Error('Невірні облікові дані'));
-        }
-      }, 1000);
-    });
+    // Use the volunteer store login function
+    const volunteerStore = useVolunteerStore();
+    const success = await volunteerStore.login(email.value, password.value);
 
-    // Example login logic (replace with actual API integration)
-    // const response = await $fetch('/api/volunteers/login', {
-    //   method: 'POST',
-    //   body: {
-    //     email: email.value,
-    //     password: password.value,
-    //     rememberMe: rememberMe.value
-    //   }
-    // });
-
-    // On successful login, redirect to volunteer dashboard
-    router.push('/volunteers/profile');
+    if (success) {
+      // On successful login, redirect to volunteer dashboard
+      router.push('/volunteers/profile');
+    } else {
+      // Handle login errors from store
+      const errorMessage = volunteerStore.error || 'Помилка входу. Спробуйте ще раз.';
+      apiError.value = errorMessage;
+      // Show error toast
+      toast?.add({
+        severity: 'error',
+        summary: 'Помилка входу',
+        detail: errorMessage,
+        life: 5000,
+      });
+    }
   } catch (error: any) {
-    // Handle login errors
+    // Handle unexpected errors
     const errorMessage = error instanceof Error ? error.message : 'Помилка входу. Спробуйте ще раз.';
-    apiError.value = error.message;
+    apiError.value = errorMessage;
     // Show error toast
     toast?.add({
       severity: 'error',

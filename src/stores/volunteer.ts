@@ -41,11 +41,33 @@ const mockVolunteer: Volunteer = {
 export const useVolunteerStore = defineStore('volunteer', () => {
   // State
   const volunteer = ref<Volunteer | null>(null);
+  const isLoggedIn = ref(false);
   const isLoading = ref(false);
   const error = ref<string | null>(null);
 
+  // Initialize login state from localStorage on client side
+  const initializeAuth = () => {
+    if (process.client) {
+      const savedLoginState = localStorage.getItem('volunteer-logged-in');
+      if (savedLoginState === 'true' && !isLoggedIn.value) {
+        isLoggedIn.value = true;
+        volunteer.value = { ...mockVolunteer };
+      }
+    }
+  };
+
+  // Initialize auth state immediately
+  if (process.client) {
+    initializeAuth();
+  }
+
   // Actions
   const fetchVolunteer = async () => {
+    // If user is already logged in and data is loaded, don't fetch again
+    if (isLoggedIn.value && volunteer.value) {
+      return;
+    }
+
     isLoading.value = true;
     error.value = null;
     
@@ -57,8 +79,10 @@ export const useVolunteerStore = defineStore('volunteer', () => {
       // const response = await $fetch('/api/volunteers/profile');
       // volunteer.value = response;
       
-      // For now, use mock data
-      volunteer.value = { ...mockVolunteer };
+      // Only load data if user is logged in
+      if (isLoggedIn.value) {
+        volunteer.value = { ...mockVolunteer };
+      }
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load volunteer profile';
       console.error('Error fetching volunteer profile:', err);
@@ -99,6 +123,49 @@ export const useVolunteerStore = defineStore('volunteer', () => {
       return false;
     } finally {
       isLoading.value = false;
+    }
+  };
+
+  const login = async (email: string, password: string) => {
+    isLoading.value = true;
+    error.value = null;
+    
+    try {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Test credentials for demo purposes
+      if (email === 'volunteer@example.com' && password === 'password123') {
+        // Set user as logged in and load volunteer data
+        volunteer.value = { ...mockVolunteer };
+        isLoggedIn.value = true;
+        
+        // Persist login state
+        if (process.client) {
+          localStorage.setItem('volunteer-logged-in', 'true');
+        }
+        
+        return true;
+      } else {
+        throw new Error('Невірні облікові дані');
+      }
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Failed to login';
+      console.error('Error during login:', err);
+      return false;
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
+  const logout = () => {
+    volunteer.value = null;
+    isLoggedIn.value = false;
+    error.value = null;
+    
+    // Clear persisted login state
+    if (process.client) {
+      localStorage.removeItem('volunteer-logged-in');
     }
   };
 
@@ -177,6 +244,7 @@ export const useVolunteerStore = defineStore('volunteer', () => {
   return {
     // State
     volunteer,
+    isLoggedIn,
     isLoading,
     error,
     
@@ -184,6 +252,9 @@ export const useVolunteerStore = defineStore('volunteer', () => {
     fetchVolunteer,
     updateVolunteer,
     uploadPhoto,
+    login,
+    logout,
+    initializeAuth,
     
     // Getters
     fullName,
