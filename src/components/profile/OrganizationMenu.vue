@@ -21,7 +21,7 @@ const items = ref([
     label: 'Волонтери',
     icon: 'pi pi-users',
     to: '/organizations/volunteers',
-    disabled: true
+    disabled: false
   },
   {
     label: 'Налаштування',

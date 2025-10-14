@@ -9,3 +9,18 @@ export interface VolunteerEventItem {
   volunteersAssigned: number;
   applied?: boolean;
 }
+
+export interface OrganizationVolunteer {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  rating: number; // 1-5
+  lastWorkedWith: string; // ISO date
+  dateOfBirth: string; // ISO date
+  address: string;
+  city: string;
+  projectsWithOrganization: number;
+  skills: string[];
+}
