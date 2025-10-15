@@ -7,7 +7,7 @@
         class="w-fit flex flex-col items-end justify-center absolute top-1/2 -right-20 -translate-y-1/2 -translate-x-1/2 z-10 gap-4"
       >
         <span class="text-6xl font-bold w-fit text-white drop-shadow-lg"
-          >Допомагай!</span
+          >Допомогай!</span
         >
         <Button label="Приєднатись" size="large" class="w-fit" @click="navigateToVolunteerLogin" />
       </div>
