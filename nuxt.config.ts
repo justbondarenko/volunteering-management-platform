@@ -24,15 +24,15 @@ export default defineNuxtConfig({
     },
   },
   modules: ['@primevue/nuxt-module', '@nuxtjs/tailwindcss', '@pinia/nuxt'],
-  plugins: ['~/plugins/pinia', '~/plugins/toast'],
+  plugins: ['~/plugins/pinia'],
   primevue: {
     importTheme: { from: '~/assets/theme/theme.js' },
     autoImport: true,
     components: {
-      include: ['Button', 'Image', 'Carousel', 'Rating', 'FileUpload', 'Calendar', 'Chips', 'Toast'],
+      include: '*'
     },
     directives: {
-      include: ['Ripple', 'Tooltip', 'FocusTrap'],
+      include: '*',
     },
     options: {
       ripple: true,
@@ -67,8 +67,6 @@ export default defineNuxtConfig({
       emptyMessage: 'Немає даних для відображення',
       emptySearchMessage: 'Результатів не знайдено',
       emptySearchResultsMessage: 'Результатів не знайдено',
-
-
     }
   },
   postcss: {
