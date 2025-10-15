@@ -24,3 +24,20 @@ export interface OrganizationVolunteer {
   projectsWithOrganization: number;
   skills: string[];
 }
+
+export interface OrganizationProject {
+  id: string;
+  name: string;
+  startDate: string; // ISO date
+  endDate: string; // ISO date
+  city: string;
+  address: string;
+  description: string;
+  volunteersNeeded: number;
+  volunteersSigned: number;
+  signedVolunteers: string[]; // Array of volunteer IDs
+  budget?: number;
+  projectManager?: string;
+  category?: string;
+  status?: 'draft' | 'upcoming' | 'active' | 'ended' | 'cancelled'; // Computed from dates
+}
