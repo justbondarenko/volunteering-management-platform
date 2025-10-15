@@ -14,8 +14,8 @@
     <HomepageCarousel v-else />
     
     <EventsFeed />
-    <HowItWorks />
-    <ContactUs />
+    <HowItWorks v-if="!isAnyUserLoggedIn" />
+    <ContactUs v-if="!isAnyUserLoggedIn" />
   </div>
 </template>
 
@@ -26,13 +26,14 @@ import EventsFeed from "~/components/homepage/EventsFeed.vue";
 import HowItWorks from "~/components/HowItWorks.vue";
 import ContactUs from "~/components/ContactUs.vue";
 
-// Get login status from both stores
+// Get login status from all stores
 const volunteerStore = useVolunteerStore();
 const organizationStore = useOrganizationStore();
+const managerStore = useManagerAuthStore();
 
 // Computed property to check if any user is logged in
 const isAnyUserLoggedIn = computed(() => {
-  return volunteerStore.isLoggedIn || organizationStore.isLoggedIn;
+  return volunteerStore.isLoggedIn || organizationStore.isLoggedIn || managerStore.isLoggedIn;
 });
 
 // Computed property for welcome message
