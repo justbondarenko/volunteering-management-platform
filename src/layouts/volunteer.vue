@@ -40,6 +40,6 @@ onMounted(() => {
 
 const logout = () => {
   volunteerStore.logout();
-  router.push('/volunteers/login');
+  router.push('/');
 };
 </script>

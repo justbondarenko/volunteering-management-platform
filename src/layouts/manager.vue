@@ -16,8 +16,12 @@
 <script setup lang="ts">
 import AppToolbar from '~/components/AppToolbar.vue';
 import ManagerMenu from '~/components/manager/ManagerMenu.vue';
+import { useManagerAuthStore } from '~/stores/manager-auth';
+
 const router = useRouter();
+const managerAuth = useManagerAuthStore();
 const logout = () => {
-  router.push('/manager/login');
+  managerAuth.logout();
+  router.push('/')
 };
 </script>

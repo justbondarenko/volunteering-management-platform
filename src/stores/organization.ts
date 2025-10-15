@@ -61,8 +61,29 @@ export const useOrganizationStore = defineStore('organization', () => {
   const isLoading = ref(false);
   const error = ref<string | null>(null);
 
+  // Initialize login state from localStorage on client side
+  const initializeAuth = () => {
+    if (process.client) {
+      const savedLoginState = localStorage.getItem('organization-login-state');
+      if (savedLoginState === 'true' && !isLoggedIn.value) {
+        isLoggedIn.value = true;
+        organization.value = { ...mockOrganization };
+      }
+    }
+  };
+
+  // Initialize auth state immediately
+  if (process.client) {
+    initializeAuth();
+  }
+
   // Actions
   const fetchOrganization = async () => {
+    // If user is already logged in and data is loaded, don't fetch again
+    if (isLoggedIn.value && organization.value) {
+      return;
+    }
+
     isLoading.value = true;
     error.value = null;
     
@@ -134,6 +155,12 @@ export const useOrganizationStore = defineStore('organization', () => {
         // Set user as logged in and load organization data
         organization.value = { ...mockOrganization };
         isLoggedIn.value = true;
+        
+        // Persist login state
+        if (process.client) {
+          localStorage.setItem('organization-login-state', 'true');
+        }
+        
         return true;
       } else {
         throw new Error('Невірні облікові дані');
@@ -151,6 +178,11 @@ export const useOrganizationStore = defineStore('organization', () => {
     organization.value = null;
     isLoggedIn.value = false;
     error.value = null;
+    
+    // Clear persisted login state
+    if (process.client) {
+      localStorage.removeItem('organization-login-state');
+    }
   };
 
   const uploadLogo = async (file: File) => {
@@ -233,6 +265,7 @@ export const useOrganizationStore = defineStore('organization', () => {
     uploadLogo,
     login,
     logout,
+    initializeAuth,
     
     // Getters
     formattedJoinedDate,

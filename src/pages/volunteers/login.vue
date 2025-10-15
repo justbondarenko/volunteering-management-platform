@@ -9,7 +9,7 @@
       </template>
       <template #content>
         <!-- TODO: REMOVE THIS WHEN WE HAVE REAL LOGIN -->
-        <Message severity="info" icon="pi pi-code" class="mb-4">Це тестова сторінка, використовуйте volunteer@example.com та password123 для входу.</Message>
+        <TestCredentialsMessage login="volunteer@example.com" password="password123" />
         <Message v-if="apiError" severity="error" icon="pi pi-exclamation-triangle" class="mb-4">{{ apiError }}</Message>
         <form @submit.prevent="handleLogin" class="flex flex-col gap-4">
           <div class="flex flex-col gap-2">
@@ -74,6 +74,8 @@
 import { z } from 'zod';
 import { useToast } from 'primevue/usetoast';
 import Message from 'primevue/message';
+import { copyToClipboard } from '~/lib/utils';
+
 const toast = useToast();
 const apiError = ref('');
 

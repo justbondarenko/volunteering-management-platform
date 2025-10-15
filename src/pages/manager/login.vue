@@ -9,7 +9,7 @@
       </template>
       <template #content>
         <!-- TODO: REMOVE THIS WHEN WE HAVE REAL LOGIN -->
-        <Message severity="info" icon="pi pi-code" class="mb-4">Це тестова сторінка, використовуйте admin@example.com та admin123 для входу.</Message>
+        <TestCredentialsMessage login="admin@example.com" password="admin123" />
         <Message v-if="apiError" severity="error" icon="pi pi-exclamation-triangle" class="mb-4">{{ apiError }}</Message>
         <form @submit.prevent="handleLogin" class="flex flex-col gap-4">
           <div class="flex flex-col gap-2">
@@ -65,6 +65,7 @@ import { useToast } from 'primevue/usetoast';
 import Message from 'primevue/message';
 const toast = useToast();
 const apiError = ref('');
+const managerAuth = useManagerAuthStore();
 
 definePageMeta({
   layout: "default",
@@ -121,31 +122,9 @@ const handleLogin = async () => {
 
   try {
     isLoading.value = true;
-
-    // TODO: Implement actual login API call here
-    await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Simulate API call - for demo purposes only
-        if (email.value === 'admin@example.com' && password.value === 'admin123') {
-          resolve(true);
-        } else {
-          reject(new Error('Невірні облікові дані'));
-        }
-      }, 1000);
-    });
-
-    // Example login logic (replace with actual API integration)
-    // const response = await $fetch('/api/manager/login', {
-    //   method: 'POST',
-    //   body: {
-    //     email: email.value,
-    //     password: password.value,
-    //     rememberMe: rememberMe.value
-    //   }
-    // });
-
-    // On successful login, redirect to manager dashboard
-    router.push('/manager/dashboard');
+    const ok = await managerAuth.login(email.value, password.value);
+    if (!ok) throw new Error(managerAuth.error || 'Помилка входу');
+    router.push('/manager');
   } catch (error: any) {
     // Handle login errors
     const errorMessage = error instanceof Error ? error.message : 'Помилка входу. Спробуйте ще раз.';

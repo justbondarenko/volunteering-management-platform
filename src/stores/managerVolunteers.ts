@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { loadFromStorage, saveToStorage } from '~/utils/persist';
 import { z } from 'zod';
 import type { Volunteer } from './volunteer';
 
@@ -186,17 +187,36 @@ export const useManagerVolunteersStore = defineStore('managerVolunteers', () => 
     error.value = null;
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 800));
+      // Simulate randomized network delay between 2s and 6s for consistent UX
+      const randomMs = 2000 + Math.floor(Math.random() * 4000);
+      await new Promise(resolve => setTimeout(resolve, randomMs));
       
-      // In a real app, this would be an API call
-      // const response = await $fetch('/api/manager/volunteers');
-      // volunteers.value = response.data;
-      // totalVolunteers.value = response.total;
-      
-      // For now, use mock data
-      volunteers.value = [...mockVolunteers];
-      totalVolunteers.value = mockVolunteers.length;
+      // Load from storage if present, otherwise seed with mock data
+      const stored = loadFromStorage<VolunteerListItem[] | null>('manager.volunteers', null);
+      volunteers.value = stored && Array.isArray(stored) ? stored : [...mockVolunteers];
+      // Ensure at least 50 items by cloning with slight variations (mocking only)
+      if (volunteers.value.length < 50) {
+        const base = [...volunteers.value];
+        let i = 0;
+        while (volunteers.value.length < 50) {
+          const src = base[i % base.length];
+          const n = volunteers.value.length + 1;
+          const firsts = ['Олександр','Марія','Іван','Анна','Максим','Юлія','Віталій','Наталія','Андрій','Оксана'];
+          const lasts = ['Петренко','Коваленко','Мельник','Шевченко','Бондаренко','Ткаченко','Кравчук','Лисенко','Савченко','Василенко'];
+          volunteers.value.push({
+            ...src,
+            id: String(n),
+            firstName: firsts[n % firsts.length],
+            lastName: lasts[n % lasts.length],
+            email: src.email.replace('@', `+${n}@`),
+            city: ['Київ','Львів','Харків','Одеса','Дніпро','Запоріжжя','Вінниця','Житомир','Тернопіль','Луцьк'][n % 10],
+            status: (['active','pending','suspended','inactive'] as const)[n % 4],
+          });
+          i++;
+        }
+      }
+      totalVolunteers.value = volunteers.value.length;
+      saveToStorage('manager.volunteers', volunteers.value);
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load volunteers';
       console.error('Error fetching volunteers:', err);

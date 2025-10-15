@@ -18,28 +18,7 @@
         <div class="text-lg font-medium mb-2 border-b pb-2 text-left">{{ userDisplayName }}</div>
         <div class="text-sm text-gray-600 mb-2 text-left">{{ userEmail }}</div>
         
-        <div class="flex flex-col gap-1">
-          <NuxtLink 
-            to="/volunteers/events" 
-            class="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-          >
-            <i class="pi pi-calendar mr-2"></i>Події
-          </NuxtLink>
-          
-          <NuxtLink 
-            to="/volunteers/profile" 
-            class="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-          >
-            <i class="pi pi-user mr-2"></i>Профіль
-          </NuxtLink>
-          
-          <NuxtLink 
-            to="/volunteers/settings" 
-            class="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-          >
-            <i class="pi pi-cog mr-2"></i>Налаштування
-          </NuxtLink>
-        </div>
+        <ProfileMenu @click="onClick" />
         
         <div class="border-t pt-2 mt-2">
           <Button 
@@ -58,6 +37,7 @@
 
 <script setup lang="ts">
 import { useVolunteerStore } from '~/stores/volunteer';
+import ProfileMenu from './profile/ProfileMenu.vue';
 
 const popover = ref();
 const router = useRouter();
@@ -74,6 +54,10 @@ const userEmail = computed(() => volunteerStore.volunteer?.email || '');
 
 const toggle = (event: MouseEvent) => {
   popover.value.toggle(event);
+};
+
+const onClick = () => {
+  popover.value.hide();
 };
 
 const logout = () => {

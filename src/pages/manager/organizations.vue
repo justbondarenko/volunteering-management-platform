@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full">
+  <div class="w-full h-full p-4 space-y-4">
     <div class="mb-4">
       <h1 class="text-2xl font-bold">Управління організаціями</h1>
       <p class="text-gray-600">Перегляд та управління організаціями на платформі</p>
@@ -13,9 +13,20 @@
           <h2 class="text-xl font-semibold">Організації</h2>
         </div>
       </template>
+      <template #subtitle>
+        <div class="flex flex-col md:flex-row gap-3 md:items-end">
+          <span class="p-input-icon-left w-full md:w-80">
+            <i class="pi pi-search" />
+            <InputText v-model="organizationsStore.filters.searchTerm" placeholder="Пошук за назвою, email або ЄДРПОУ" class="w-full" />
+          </span>
+          <Dropdown class="w-full md:w-56" :options="statusOptions" optionLabel="label" optionValue="value" v-model="organizationsStore.filters.status" placeholder="Статус" />
+          <Dropdown class="w-full md:w-56" :options="cityOptions" v-model="organizationsStore.filters.city" placeholder="Місто" />
+          <Button label="Скинути" text @click="resetOrgFilters" />
+        </div>
+      </template>
       <template #content>
         <OrganizationsTable 
-          :organizations="organizationsStore.organizations"
+          :organizations="organizationsStore.getFilteredOrganizations"
           :loading="organizationsStore.isLoading"
           @view-organization="openOrganizationModal"
           @update-status="handleStatusUpdate"
@@ -47,6 +58,20 @@ definePageMeta({
 const toast = useToast();
 const organizationsStore = useManagerOrganizationsStore();
 const router = useRouter();
+const statusOptions = [
+  { label: 'Всі', value: null },
+  { label: 'Активна', value: 'active' },
+  { label: 'Очікує перевірки', value: 'pending' },
+  { label: 'Призупинена', value: 'suspended' },
+  { label: 'Неактивна', value: 'inactive' },
+];
+const cityOptions = computed(() => organizationsStore.getAvailableCities);
+
+function resetOrgFilters() {
+  organizationsStore.filters.status = null;
+  organizationsStore.filters.city = null;
+  organizationsStore.filters.searchTerm = '';
+}
 
 // Modal state
 const organizationModalVisible = ref(false);

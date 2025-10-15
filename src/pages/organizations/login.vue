@@ -1,16 +1,18 @@
 <template>
-  <div class="w-full h-full flex flex-col items-center justify-start bg-slate-50 p-4">
-    <Card class="shadow-lg max-w-md w-full">
+  <div class="flex h-full w-full flex-col items-center justify-start bg-slate-50 p-4">
+    <Card class="w-full max-w-md shadow-lg">
       <template #title>
-        <div class="mb-4 items-center justify-center inline-flex gap-2">
+        <div class="mb-4 inline-flex items-center justify-center gap-2">
           <i class="pi pi-building"></i>
           <h1 class="text-center text-2xl font-bold">Вхід для організацій</h1>
         </div>
       </template>
       <template #content>
         <!-- TODO: REMOVE THIS WHEN WE HAVE REAL LOGIN -->
-        <Message severity="info" icon="pi pi-code" class="mb-4">Це тестова сторінка, використовуйте organization@example.com та password123 для входу.</Message>
-        <Message v-if="apiError" severity="error" icon="pi pi-exclamation-triangle" class="mb-4">{{ apiError }}</Message>
+        <TestCredentialsMessage login="organization@example.com" password="password123" />
+        <Message v-if="apiError" severity="error" icon="pi pi-exclamation-triangle" class="mb-4">
+          {{ apiError }}
+        </Message>
         <form @submit.prevent="handleLogin" class="flex flex-col gap-4">
           <div class="flex flex-col gap-2">
             <label for="email" class="font-medium">Email</label>
@@ -50,9 +52,7 @@
               <Checkbox v-model="rememberMe" inputId="rememberMe" :binary="true" />
               <label for="rememberMe" class="ml-2 text-sm">Запам'ятати мене</label>
             </div>
-            <NuxtLink to="/organizations/forgot" class="text-sm text-blue-600 hover:underline">
-              Забули пароль?
-            </NuxtLink>
+            <NuxtLink to="/organizations/forgot" class="text-sm text-blue-600 hover:underline">Забули пароль?</NuxtLink>
           </div>
 
           <Button type="submit" label="Увійти" class="mt-2 w-full" :loading="isLoading" :disabled="isLoading" />
@@ -74,11 +74,14 @@
 import { z } from 'zod';
 import { useToast } from 'primevue/usetoast';
 import Message from 'primevue/message';
+import { useOrganizationStore } from '~/stores/organization';
+
 const toast = useToast();
+const organizationStore = useOrganizationStore();
 const apiError = ref('');
 
 definePageMeta({
-  layout: "default",
+  layout: 'default',
 });
 
 // Form state
@@ -132,30 +135,23 @@ const handleLogin = async () => {
   try {
     isLoading.value = true;
 
-    // TODO: Implement actual login API call here
-    await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Simulate API call - for demo purposes only
-        if (email.value === 'organization@example.com' && password.value === 'password123') {
-          resolve(true);
-        } else {
-          reject(new Error('Невірні облікові дані'));
-        }
-      }, 1000);
-    });
+    // Use the organization store login method
+    const success = await organizationStore.login(email.value, password.value);
+    
+    if (success) {
+      // Show success toast
+      toast?.add({
+        severity: 'success',
+        summary: 'Успішний вхід',
+        detail: 'Ви успішно увійшли в систему',
+        life: 3000,
+      });
 
-    // Example login logic (replace with actual API integration)
-    // const response = await $fetch('/api/organizations/login', {
-    //   method: 'POST',
-    //   body: {
-    //     email: email.value,
-    //     password: password.value,
-    //     rememberMe: rememberMe.value
-    //   }
-    // });
-
-    // On successful login, redirect to organization profile
-    router.push('/organizations/profile');
+      // On successful login, redirect to organization profile
+      router.push('/organizations/profile');
+    } else {
+      throw new Error('Невірні облікові дані');
+    }
   } catch (error: any) {
     // Handle login errors
     const errorMessage = error instanceof Error ? error.message : 'Помилка входу. Спробуйте ще раз.';
