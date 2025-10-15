@@ -38,7 +38,6 @@ const items = ref([
     label: 'Налаштування',
     icon: 'pi pi-cog',
     to: '/organizations/settings',
-    disabled: true,
   },
 ]);
 </script>
