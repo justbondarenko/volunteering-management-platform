@@ -1,247 +1,119 @@
-# Volunteering Management Platform
+# 🌟 Volunteering Management Platform 🌟
 
-A comprehensive web application built with Nuxt 3 for managing volunteer activities and organizations. The platform provides separate interfaces for volunteers, organizations, and administrators to coordinate volunteer work effectively.
+A comprehensive web application built with Nuxt 3 for managing volunteer activities and organizations. This platform provides dedicated interfaces for volunteers, organizations, and administrators to streamline coordination and management of volunteer work.
 
-## 🚀 Features
+**[📖 User Guide (EN)](./USER_GUIDE.md) | [📖 Посібник користувача (UA)](./USER_GUIDE_UA.md)**
 
-- **Multi-role System**: Separate interfaces for volunteers, organizations, and administrators
-- **User Authentication**: Secure login, registration, and password management
-- **Profile Management**: Comprehensive user and organization profiles
-- **Admin Dashboard**: Centralized management of users and organizations
-- **Responsive Design**: Mobile-first approach with modern UI components
-- **TypeScript**: Full type safety throughout the application
+---
+
+## 📋 Table of Contents
+
+- [About The Project](#-about-the-project)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [📁 Project Structure](#-project-structure)
+- [🚀 Getting Started](#-getting-started)
+- [✨ Key Features](#-key-features)
+- [📄 License](#-license)
+
+---
+
+## 🎯 About The Project
+
+This project is a multi-tenant application designed to serve three distinct roles: Volunteers, Organizations, and Platform Managers. The core goal is to provide a scalable, maintainable, and user-friendly platform for the volunteering ecosystem. Built on Nuxt 3, it leverages server-side rendering for performance and SEO, with a modular architecture that supports future growth.
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Nuxt 3, Vue 3, TypeScript
-- **UI Components**: PrimeVue, Tailwind CSS
-- **State Management**: Pinia
-- **Icons**: FontAwesome
-- **Styling**: SCSS with Tailwind CSS utilities
+This project is built with a modern, robust, and scalable tech stack:
+
+- **⚡️ Framework**: [Nuxt 3](https://nuxt.com/)
+- **🎨 UI Framework**: [Vue 3](https://vuejs.org/)
+- **🔵 Language**: [TypeScript](https://www.typescriptlang.org/)
+- **🧩 UI Components**: [PrimeVue](https://primevue.org/)
+- **💨 CSS Framework**: [Tailwind CSS](https://tailwindcss.com/)
+- **🏪 State Management**: [Pinia](https://pinia.vuejs.org/)
+- **💅 Styling**: [SCSS](https://sass-lang.com/)
+
+---
 
 ## 📁 Project Structure
 
+A high-level overview of the project's structure:
+
 ```
 src/
-├── components/         # Reusable Vue components
-├── layouts/            # Page layouts for different user roles
-├── pages/              # Application routes and pages
-├── stores/             # Pinia state management
-├── plugins/            # Nuxt plugins
-└── assets/             # Static assets and styles
+├── assets/         # Static assets, SCSS files, and themes
+├── components/     # Reusable Vue components for various features
+├── layouts/        # Layouts for different user roles (e.g., default, manager)
+├── pages/          # Application routes and views
+├── plugins/        # Nuxt plugins for integrating libraries
+├── stores/         # Pinia stores for centralized state management
+└── ...             # Other Nuxt 3 directories (composables, middleware, etc.)
 ```
 
-## 🌐 Pages Structure & Functionality
-
-### Public Pages
-
-#### `/` - Homepage
-- **Layout**: `default`
-- **Components**: HomepageCarousel, EventsFeed, HowItWorks, ContactUs
-- **Functionality**: Landing page with carousel, events feed, how-it-works section, and contact form
-
-#### `/for-organizations` - Organization Information
-- **Layout**: `default`
-- **Functionality**: Information page for organizations about the platform (currently minimal content)
-
-### Manager Pages (`/manager/*`)
-*Administrative interface for platform management*
-
-#### `/manager/login` - Manager Login
-- **Layout**: `manager`
-- **Functionality**: Secure authentication for platform administrators
-- **Features**: Email/password login with validation
-
-#### `/manager/dashboard` - Admin Dashboard
-- **Layout**: `manager`
-- **Functionality**: Centralized overview of platform statistics
-- **Features**:
-  - Organization statistics (total, active, pending, suspended)
-  - Volunteer statistics (total, active, inactive)
-  - Quick navigation to detailed management pages
-  - Status cards with visual indicators
-
-#### `/manager/organizations` - Organizations Management
-- **Layout**: `manager`
-- **Functionality**: Comprehensive management of all registered organizations
-- **Features**:
-  - View all organizations in a table format
-  - Filter and search organizations
-  - View organization details
-  - Manage organization status (approve, suspend, etc.)
-
-#### `/manager/volunteers` - Volunteers Management
-- **Layout**: `manager`
-- **Functionality**: Management of all registered volunteers
-- **Features**:
-  - View all volunteers in a table format
-  - Filter and search volunteers
-  - View volunteer details
-  - Manage volunteer accounts
-
-### Organization Pages (`/organizations/*`)
-*Interface for nonprofit organizations and companies*
-
-#### `/organizations/signup` - Organization Registration
-- **Layout**: `default`
-- **Functionality**: Complete organization registration process
-- **Features**:
-  - Organization name and legal entity information
-  - Address details (country, city, address line, zip code)
-  - Contact information (email, phone)
-  - Password creation with confirmation
-  - Terms and conditions acceptance
-  - Form validation and error handling
-
-#### `/organizations/login` - Organization Login
-- **Layout**: `default`
-- **Functionality**: Secure authentication for organizations
-- **Features**: Email/password login with validation
-
-#### `/organizations/profile` - Organization Profile
-- **Layout**: `organization`
-- **Functionality**: Comprehensive organization profile management
-- **Features**:
-  - View and edit organization information
-  - Manage contact details
-  - Update address information
-  - Profile picture management
-
-#### `/organizations/events` - Organization Events
-- **Layout**: `organization`
-- **Functionality**: List organization's events and create new ones
-- **Features**:
-  - Paginated table of events with date, location, status
-  - Quick stats per event: assigned vs needed volunteers
-  - Create-event dialog with validation (title, date/time, location, description, volunteers needed, status)
-  - Server-ready structure (mocked for now) for future API integration
-
-#### `/organizations/forgot` - Password Recovery
-- **Layout**: `default`
-- **Functionality**: Password reset request process
-- **Features**: Email-based password recovery
-
-#### `/organizations/reset-password` - Password Reset
-- **Layout**: `default`
-- **Functionality**: Set new password after recovery
-- **Features**: Secure password reset with validation
-
-### Volunteer Pages (`/volunteers/*`)
-*Interface for individual volunteers*
-
-#### `/volunteers/signup` - Volunteer Registration
-- **Layout**: `default`
-- **Functionality**: Individual volunteer registration
-- **Features**:
-  - Email and password creation
-  - Password confirmation
-  - Terms and conditions acceptance
-  - Form validation and error handling
-
-#### `/volunteers/login` - Volunteer Login
-- **Layout**: `default`
-- **Functionality**: Secure authentication for volunteers
-- **Features**: Email/password login with validation
-
-#### `/volunteers/profile` - Volunteer Profile
-- **Layout**: `volunteer`
-- **Functionality**: Personal volunteer profile management
-- **Features**:
-  - View and edit personal information
-  - Manage contact details
-  - Profile picture management
-  - Volunteer preferences and skills
-
-#### `/volunteers/events` - Browse and Apply to Events
-- **Layout**: `volunteer`
-- **Functionality**: Discover events and submit applications
-- **Features**:
-  - Filters: search, city, status, date range
-  - Grid view with status tags and short descriptions
-  - Apply action with validation and feedback
-  - Shows capacity: assigned vs needed volunteers
-
-#### `/volunteers/forgot` - Password Recovery
-- **Layout**: `default`
-- **Functionality**: Password reset request process
-- **Features**: Email-based password recovery
-
-#### `/volunteers/reset-password` - Password Reset
-- **Layout**: `default`
-- **Functionality**: Set new password after recovery
-- **Features**: Secure password reset with validation
-
-## 🎨 Layouts
-
-- **`default`**: Standard layout for public pages
-- **`manager`**: Administrative interface layout
-- **`organization`**: Organization-specific layout
-- **`volunteer`**: Volunteer-specific layout
-
-## 🔐 Authentication Flow
-
-1. **Registration**: Users can register as either volunteers or organizations
-2. **Login**: Secure authentication with email/password
-3. **Password Recovery**: Email-based password reset system
-4. **Role-based Access**: Different layouts and permissions based on user type
+---
 
 ## 🚀 Getting Started
 
+Follow these steps to get a local copy up and running.
+
 ### Prerequisites
-- Node.js (version 18 or higher)
-- npm, yarn, pnpm, or bun
 
-### Installation
+Make sure you have Node.js installed on your machine.
+- **Node.js**: `v18.x` or higher
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd volunteering-management-platform
-```
+### Installation & Setup
 
-2. Install dependencies:
-```bash
-npm install
-# or
-pnpm install
-# or
-yarn install
-# or
-bun install
-```
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/volunteering-management-platform.git
+    cd volunteering-management-platform
+    ```
 
-3. Start the development server:
-```bash
-npm run dev
-# or
-pnpm dev
-# or
-yarn dev
-# or
-bun run dev
-```
+2.  **Install dependencies:**
+    ```bash
+    # Recommended
+    pnpm install
 
-4. Open your browser and navigate to `http://localhost:3000`
+    # Or with npm
+    npm install
+
+    # Or with yarn
+    yarn install
+    ```
+
+3.  **Run the development server:**
+    ```bash
+    pnpm dev
+    ```
+    The application will be available at `http://localhost:3000`.
 
 ### Building for Production
 
+To build the application for production, run:
 ```bash
-npm run build
-npm run preview
+pnpm build
 ```
 
-## 📱 Responsive Design
+To preview the production build locally, run:
+```bash
+pnpm preview
+```
 
-The platform is built with a mobile-first approach using Tailwind CSS, ensuring optimal user experience across all device sizes.
+---
 
-## 🔧 Development
+## ✨ Key Features
 
-- **TypeScript**: Full type safety throughout the application
-- **Vue 3 Composition API**: Modern Vue.js development patterns
-- **Nuxt 3**: Server-side rendering and auto-imports
-- **PrimeVue**: Rich UI component library
-- **Pinia**: State management with TypeScript support
+- **🛡️ Role-Based Access Control (RBAC):** Separate, protected routes and layouts for Volunteers, Organizations, and Managers.
+- **🔐 Secure Authentication:** A complete authentication system with registration, login, and password recovery flows.
+- **🏪 Modular State Management:** Centralized and type-safe state management using Pinia, with dedicated stores for each feature domain.
+- **📱 Mobile-First Responsive Design:** A clean and modern UI built with Tailwind CSS that looks great on all devices.
+- **💪 Full Type-Safety:** End-to-end type safety with TypeScript, from the backend to the components.
+- **🎛️ Centralized Admin Dashboard:** A powerful interface for platform managers to oversee organizations, users, and content.
+
+---
 
 ## 📄 License
 
-This project is licensed under the terms specified in the LICENSE file.
+This project is distributed under the MIT License. See `LICENSE` for more information.
