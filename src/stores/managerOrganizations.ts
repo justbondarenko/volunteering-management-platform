@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { loadFromStorage, saveToStorage } from '~/utils/persist';
 import { z } from 'zod';
 import type { Organization } from './organization';
 
@@ -174,17 +175,35 @@ export const useManagerOrganizationsStore = defineStore('managerOrganizations', 
     error.value = null;
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 800));
+      // Simulate randomized network delay between 2s and 6s for consistent UX
+      const randomMs = 2000 + Math.floor(Math.random() * 4000);
+      await new Promise(resolve => setTimeout(resolve, randomMs));
       
-      // In a real app, this would be an API call
-      // const response = await $fetch('/api/manager/organizations');
-      // organizations.value = response.data;
-      // totalOrganizations.value = response.total;
-      
-      // For now, use mock data
-      organizations.value = [...mockOrganizations];
-      totalOrganizations.value = mockOrganizations.length;
+      // Load from storage if present, otherwise seed with mock data
+      const stored = loadFromStorage<OrganizationListItem[] | null>('manager.organizations', null);
+      organizations.value = stored && Array.isArray(stored) ? stored : [...mockOrganizations];
+      // Ensure at least 50 items by cloning with slight variations (mocking only)
+      if (organizations.value.length < 50) {
+        const base = [...organizations.value];
+        let i = 0;
+        while (organizations.value.length < 50) {
+          const src = base[i % base.length];
+          const n = organizations.value.length + 1;
+          organizations.value.push({
+            ...src,
+            id: String(n),
+            name: `${src.name} №${n}`,
+            email: src.email.replace('@', `+${n}@`),
+            edrpou: String(1000000000 + n),
+            city: ['Київ','Львів','Харків','Одеса','Дніпро','Запоріжжя','Вінниця','Житомир','Тернопіль','Луцьк'][n % 10],
+            status: (['active','pending','suspended','inactive'] as const)[n % 4],
+          });
+          i++;
+        }
+      }
+      totalOrganizations.value = organizations.value.length;
+      // persist current dataset
+      saveToStorage('manager.organizations', organizations.value);
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load organizations';
       console.error('Error fetching organizations:', err);
@@ -201,12 +220,6 @@ export const useManagerOrganizationsStore = defineStore('managerOrganizations', 
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 800));
       
-      // In a real app, this would be an API call
-      // await $fetch(`/api/manager/organizations/${id}/status`, {
-      //   method: 'PUT',
-      //   body: { status }
-      // });
-      
       // Update local state
       const index = organizations.value.findIndex(org => org.id === id);
       if (index !== -1) {
@@ -214,6 +227,7 @@ export const useManagerOrganizationsStore = defineStore('managerOrganizations', 
           ...organizations.value[index],
           status
         };
+        saveToStorage('manager.organizations', organizations.value);
       }
       
       return true;

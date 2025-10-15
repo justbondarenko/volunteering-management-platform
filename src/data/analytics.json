@@ -1,0 +1,14 @@
+{
+  "kpis": {"totalUsers": 1250, "newUsers30d": 140, "activeEvents": 22, "verifiedOrgs": 18},
+  "newUsers90d": [
+    {"date":"2025-07-15","value":30},
+    {"date":"2025-08-15","value":45},
+    {"date":"2025-09-15","value":65}
+  ],
+  "eventsByCity": [
+    {"city":"Київ","count":12},
+    {"city":"Львів","count":6},
+    {"city":"Харків","count":4}
+  ]
+}
+

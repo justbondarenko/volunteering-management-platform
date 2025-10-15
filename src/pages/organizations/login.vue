@@ -9,17 +9,7 @@
       </template>
       <template #content>
         <!-- TODO: REMOVE THIS WHEN WE HAVE REAL LOGIN -->
-        <Message severity="info" icon="pi pi-code" class="mb-4">
-          Це тестова сторінка, використовуйте ці облікові дані для входу:
-          <br />
-          Email:
-          <code>organization@example.com</code>
-          <i class="ml-2 pi pi-copy hover:cursor-pointer" @click="copyToClipboard('organization@example.com')" />
-          <br />
-          Пароль:
-          <code>password123</code>
-          <i class="ml-2 pi pi-copy hover:cursor-pointer" @click="copyToClipboard('password123')" />
-        </Message>
+        <TestCredentialsMessage login="organization@example.com" password="password123" />
         <Message v-if="apiError" severity="error" icon="pi pi-exclamation-triangle" class="mb-4">
           {{ apiError }}
         </Message>
@@ -84,7 +74,6 @@
 import { z } from 'zod';
 import { useToast } from 'primevue/usetoast';
 import Message from 'primevue/message';
-import { copyToClipboard } from '~/lib/utils';
 import { useOrganizationStore } from '~/stores/organization';
 
 const toast = useToast();

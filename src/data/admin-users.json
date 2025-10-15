@@ -1,0 +1,27 @@
+[
+  {
+    "id": "u_1001",
+    "name": "Олексій Іваненко",
+    "email": "oleksii.ivanenko@pryklad.ua",
+    "role": "User",
+    "status": "Active",
+    "createdAt": "2025-07-01T10:00:00.000Z"
+  },
+  {
+    "id": "u_1002",
+    "name": "Соломія Мельник",
+    "email": "solomiia.melnyk@pryklad.ua",
+    "role": "Org Rep",
+    "status": "Blocked",
+    "createdAt": "2025-06-10T09:00:00.000Z"
+  },
+  {
+    "id": "u_1003",
+    "name": "Давид Левченко",
+    "email": "d.levchenko@pryklad.ua",
+    "role": "Admin",
+    "status": "Active",
+    "createdAt": "2025-08-15T14:20:00.000Z"
+  }
+]
+

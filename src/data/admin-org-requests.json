@@ -1,0 +1,24 @@
+[
+  {
+    "id": "req_2001",
+    "organizationName": "Фонд «Допомога Рука в Руку»",
+    "applicantName": "Марія Гончар",
+    "submittedAt": "2025-09-20T09:10:00.000Z",
+    "status": "Pending",
+    "website": "https://dopomoha.org.ua",
+    "email": "kontakt@dopomoha.org.ua",
+    "phone": "+380441234567",
+    "address": "вул. Хрещатик, 12, Київ",
+    "legalName": "Благодійний фонд «Допомога Рука в Руку»"
+  },
+  {
+    "id": "req_2002",
+    "organizationName": "Мережа Міських Волонтерів",
+    "applicantName": "Іван Карпенко",
+    "submittedAt": "2025-09-18T12:00:00.000Z",
+    "status": "Pending",
+    "website": "https://volonter.org.ua",
+    "email": "admin@volonter.org.ua"
+  }
+]
+

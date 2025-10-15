@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full">
+  <div class="w-full h-full p-4 space-y-4">
     <div class="mb-4">
       <h1 class="text-2xl font-bold">Управління волонтерами</h1>
       <p class="text-gray-600">Перегляд та управління волонтерами на платформі</p>
@@ -15,9 +15,21 @@
           <h2 class="text-xl font-semibold">Волонтери</h2>
         </div>
       </template>
+      <template #subtitle>
+        <div class="flex flex-col md:flex-row gap-3 md:items-end">
+          <span class="p-input-icon-left w-full md:w-80">
+            <i class="pi pi-search" />
+            <InputText v-model="volunteersStore.filters.searchTerm" placeholder="Пошук за іменем, email або ПІБ" class="w-full" />
+          </span>
+          <Dropdown class="w-full md:w-56" :options="statusOptions" optionLabel="label" optionValue="value" v-model="volunteersStore.filters.status" placeholder="Статус" />
+          <Dropdown class="w-full md:w-56" :options="cityOptions" v-model="volunteersStore.filters.city" placeholder="Місто" />
+          <Dropdown class="w-full md:w-56" :options="skillsOptions" v-model="volunteersStore.filters.skill" placeholder="Навичка" />
+          <Button label="Скинути" text @click="resetVolFilters" />
+        </div>
+      </template>
       <template #content>
         <VolunteersTable 
-          :volunteers="volunteersStore.volunteers"
+          :volunteers="volunteersStore.getFilteredVolunteers"
           :loading="volunteersStore.isLoading"
           @view-volunteer="openVolunteerModal"
           @update-status="handleStatusUpdate"
@@ -49,6 +61,22 @@ definePageMeta({
 const toast = useToast();
 const volunteersStore = useManagerVolunteersStore();
 const router = useRouter();
+const statusOptions = [
+  { label: 'Всі', value: null },
+  { label: 'Активний', value: 'active' },
+  { label: 'Очікує перевірки', value: 'pending' },
+  { label: 'Призупинений', value: 'suspended' },
+  { label: 'Неактивний', value: 'inactive' },
+];
+const cityOptions = computed(() => volunteersStore.getAvailableCities);
+const skillsOptions = computed(() => volunteersStore.getAvailableSkills);
+
+function resetVolFilters() {
+  volunteersStore.filters.status = null;
+  volunteersStore.filters.city = null;
+  volunteersStore.filters.searchTerm = '';
+  volunteersStore.filters.skill = null;
+}
 
 // Modal state
 const volunteerModalVisible = ref(false);

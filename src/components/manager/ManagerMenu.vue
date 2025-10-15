@@ -1,40 +1,50 @@
 <template>
   <div class="card flex justify-center">
-    <Menu :model="items" />
+    <Menu :model="items">
+      <template #item="{ item, props }">
+        <NuxtLink v-if="item.to" v-slot="{ href, navigate }" :to="item.to" custom>
+          <a v-ripple :href="href" v-bind="props.action" @click="navigate" class="flex align-items-center p-link">
+            <span :class="item.icon" />
+            <span class="ml-2">{{ item.label }}</span>
+          </a>
+        </NuxtLink>
+        <a v-else v-ripple v-bind="props.action" class="flex align-items-center p-link">
+          <span :class="item.icon" />
+          <span class="ml-2">{{ item.label }}</span>
+        </a>
+      </template>
+    </Menu>
   </div>
 </template>
 
 <script setup lang="ts">
 import Menu from 'primevue/menu';
 import type { MenuItem } from 'primevue/menuitem';
-const router = useRouter();
 const items = ref([
   {
     label: 'Дашборд',
     icon: 'pi pi-chart-bar',
-    command: () => router.push('/manager/dashboard')
+    to:'/manager'
   },
   {
     label: 'Організації',
     icon: 'pi pi-building',
-    command: () => router.push('/manager/organizations')
+    to:'/manager/organizations'
   },
   {
     label: 'Волонтери',
     icon: 'pi pi-users',
-    command: () => router.push('/manager/volunteers')
+    to:'/manager/volunteers'
   },
   {
     label: 'Проекти',
     icon: 'pi pi-flag',
-    command: () => router.push('/manager/projects'),
-    disabled: true
+    to: '/manager/projects',
   },
   {
     label: 'Налаштування',
     icon: 'pi pi-cog',
-    command: () => router.push('/manager/settings'),
-    disabled: true
+    to: '/manager/settings'
   }
 ]) as Ref<MenuItem[]>;
 </script>

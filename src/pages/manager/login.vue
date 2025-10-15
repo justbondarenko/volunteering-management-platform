@@ -9,7 +9,7 @@
       </template>
       <template #content>
         <!-- TODO: REMOVE THIS WHEN WE HAVE REAL LOGIN -->
-        <Message severity="info" icon="pi pi-code" class="mb-4">Це тестова сторінка, використовуйте admin@example.com та admin123 для входу.</Message>
+        <TestCredentialsMessage login="admin@example.com" password="admin123" />
         <Message v-if="apiError" severity="error" icon="pi pi-exclamation-triangle" class="mb-4">{{ apiError }}</Message>
         <form @submit.prevent="handleLogin" class="flex flex-col gap-4">
           <div class="flex flex-col gap-2">
@@ -145,7 +145,7 @@ const handleLogin = async () => {
     // });
 
     // On successful login, redirect to manager dashboard
-    router.push('/manager/dashboard');
+    router.push('/manager');
   } catch (error: any) {
     // Handle login errors
     const errorMessage = error instanceof Error ? error.message : 'Помилка входу. Спробуйте ще раз.';
