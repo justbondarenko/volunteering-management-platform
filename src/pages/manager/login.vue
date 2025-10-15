@@ -65,6 +65,7 @@ import { useToast } from 'primevue/usetoast';
 import Message from 'primevue/message';
 const toast = useToast();
 const apiError = ref('');
+const managerAuth = useManagerAuthStore();
 
 definePageMeta({
   layout: "default",
@@ -121,30 +122,8 @@ const handleLogin = async () => {
 
   try {
     isLoading.value = true;
-
-    // TODO: Implement actual login API call here
-    await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Simulate API call - for demo purposes only
-        if (email.value === 'admin@example.com' && password.value === 'admin123') {
-          resolve(true);
-        } else {
-          reject(new Error('Невірні облікові дані'));
-        }
-      }, 1000);
-    });
-
-    // Example login logic (replace with actual API integration)
-    // const response = await $fetch('/api/manager/login', {
-    //   method: 'POST',
-    //   body: {
-    //     email: email.value,
-    //     password: password.value,
-    //     rememberMe: rememberMe.value
-    //   }
-    // });
-
-    // On successful login, redirect to manager dashboard
+    const ok = await managerAuth.login(email.value, password.value);
+    if (!ok) throw new Error(managerAuth.error || 'Помилка входу');
     router.push('/manager');
   } catch (error: any) {
     // Handle login errors

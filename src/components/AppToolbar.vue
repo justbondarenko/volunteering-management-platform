@@ -7,19 +7,10 @@
       </NuxtLink>
     </template>
 
-    <!-- <template #center>
-      <div class="flex items-center gap-6 pr-10">
-        <a
-          v-for="item in items"
-          :key="item.label"
-          :href="item.href"
-          class="text-lg font-bold text-gray-700"
-          >{{ item.label }}</a
-        >
-      </div>
-    </template> -->
     <template #end>
-      <UserProfileDropdown v-if="isLoggedIn" />
+      <ManagerProfileDropdown v-if="isManagerLoggedIn" />
+      <OrganizationProfileDropdown v-else-if="isOrganizationLoggedIn" />
+      <UserProfileDropdown v-else-if="isVolunteerLoggedIn" />
       <LoginButton v-else />
     </template>
   </Toolbar>
@@ -28,12 +19,19 @@
 <script setup lang="ts">
 import LoginButton from "./LoginButton.vue";
 import UserProfileDropdown from "./UserProfileDropdown.vue";
+import ManagerProfileDropdown from "./ManagerProfileDropdown.vue";
 import { useVolunteerStore } from '~/stores/volunteer';
+import { useOrganizationStore } from '~/stores/organization';
+import { useManagerAuthStore } from '~/stores/manager-auth';
 
 const volunteerStore = useVolunteerStore();
+const organizationStore = useOrganizationStore();
+const managerAuth = useManagerAuthStore();
 
-// Computed property for login state
-const isLoggedIn = computed(() => volunteerStore.isLoggedIn);
+// Computed properties for login state per role
+const isVolunteerLoggedIn = computed(() => volunteerStore.isLoggedIn);
+const isOrganizationLoggedIn = computed(() => organizationStore.isLoggedIn);
+const isManagerLoggedIn = computed(() => managerAuth.isLoggedIn);
 
 const items = ref([
   {

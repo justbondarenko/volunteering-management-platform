@@ -16,8 +16,11 @@
 <script setup lang="ts">
 import AppToolbar from '~/components/AppToolbar.vue';
 import OrganizationMenu from '~/components/profile/OrganizationMenu.vue';
+
 const router = useRouter();
+const organizationStore = useOrganizationStore();
 const logout = () => {
-  router.push('/organizations/login');
+  organizationStore.logout();
+  router.push('/')
 };
 </script>
