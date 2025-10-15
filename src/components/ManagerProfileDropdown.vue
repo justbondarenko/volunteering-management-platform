@@ -18,20 +18,7 @@
         <div class="text-lg font-medium mb-2 border-b pb-2 text-left">{{ managerName }}</div>
         <div class="text-sm text-gray-600 mb-2 text-left">{{ managerEmail }}</div>
 
-        <div class="flex flex-col gap-1">
-          <NuxtLink 
-            to="/manager" 
-            class="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-          >
-            <i class="pi pi-chart-bar mr-2"></i>Дашборд
-          </NuxtLink>
-          <NuxtLink 
-            to="/manager/settings" 
-            class="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition-colors"
-          >
-            <i class="pi pi-cog mr-2"></i>Налаштування
-          </NuxtLink>
-        </div>
+        <ManagerMenu @click="onClick" />
 
         <div class="border-t pt-2 mt-2">
           <Button 
@@ -50,7 +37,7 @@
 
 <script setup lang="ts">
 import { useManagerAuthStore } from '~/stores/manager-auth';
-
+import ManagerMenu from './manager/ManagerMenu.vue';
 const popover = ref();
 const router = useRouter();
 const managerAuth = useManagerAuthStore();
@@ -61,6 +48,11 @@ const managerEmail = computed(() => managerAuth.manager?.email || '');
 const toggle = (event: MouseEvent) => {
   popover.value.toggle(event);
 };
+
+const onClick = () => {
+  popover.value.hide();
+};
+
 
 const logout = () => {
   managerAuth.logout();

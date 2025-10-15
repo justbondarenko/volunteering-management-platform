@@ -2,13 +2,13 @@
   <div class="card flex justify-center">
     <Menu :model="items">
       <template #item="{ item, props }">
-        <NuxtLink v-if="item.to" v-slot="{ href, navigate }" :to="item.to" custom>
+        <NuxtLink v-if="item.to" v-slot="{ href, navigate }" :to="item.to" custom @click="emits('click')">
           <a v-ripple :href="href" v-bind="props.action" @click="navigate" class="align-items-center p-link flex">
             <span :class="item.icon" />
             <span class="ml-2">{{ item.label }}</span>
           </a>
         </NuxtLink>
-        <a v-else v-ripple v-bind="props.action" class="align-items-center p-link flex">
+        <a v-else v-ripple v-bind="props.action" class="align-items-center p-link flex" @click="emits('click')">
           <span :class="item.icon" />
           <span class="ml-2">{{ item.label }}</span>
         </a>
@@ -18,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
+const emits = defineEmits(['click']);
 const items = ref([
   {
     label: 'Проекти',

@@ -9,23 +9,17 @@
     <Popover ref="popover" id="login-options">
       <div class="flex w-48 flex-col gap-2 p-2">
         <div class="mb-2 text-lg font-medium">Увійти як</div>
-        <Button asChild v-slot="slotProps">
-          <RouterLink to="/organizations/login" :class="slotProps.class">
+        <Button v-slot="slotProps" @click="navigateTo('/organizations/login')">
             <i class="pi pi-building mr-2"></i>
             Організація
-          </RouterLink>
         </Button>
-        <Button asChild v-slot="slotProps">
-          <RouterLink to="/volunteers/login" :class="slotProps.class">
+        <Button v-slot="slotProps" @click="navigateTo('/volunteers/login')">
             <i class="pi pi-user mr-2"></i>
             Волонтер
-          </RouterLink>
         </Button>
-        <Button asChild v-slot="slotProps">
-          <RouterLink to="/manager/login" :class="slotProps.class">
+        <Button v-slot="slotProps" @click="navigateTo('/manager/login')"    >
             <i class="pi pi-cog mr-2"></i>
             Менеджер
-          </RouterLink>
         </Button>
       </div>
     </Popover>
@@ -41,7 +35,7 @@ const toggle = (event: MouseEvent) => {
 };
 
 const navigateTo = (path: string) => {
-  popover.value.hide();
   router.push(path);
+  popover.value.hide();
 };
 </script>
